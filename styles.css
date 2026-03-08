@@ -496,3 +496,101 @@ p{margin:0}
     aspect-ratio: 16/10 !important;
   }
 }
+# === PATCH 1: styles.css (unten anfügen) =====================================
+
+/* ===== Customer tweaks (Mar 4) ===== */
+
+/* 1) Font: Arial Narrow Bold on mobile (fallback-safe) */
+:root{
+  --font-sans-narrow: "Arial Narrow", "HelveticaNeue-CondensedBold",
+                      "Helvetica Neue Condensed", "Roboto Condensed",
+                      Arial, system-ui, -apple-system, Segoe UI, sans-serif;
+}
+
+/* Apply only on mobile as requested; keep desktop look intact */
+@media (max-width: 859px){
+  body{
+    font-family: var(--font-sans-narrow);
+    font-weight: 700; /* Bold feel */
+    letter-spacing: .01em;
+  }
+
+  /* Keep text readable (not everything ultra-bold) */
+  p, .muted, .hc-text, .footer, .legal, .small{
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  h1, h2, h3, .nav__link, .cta, .brand__name{
+    font-family: var(--font-sans-narrow);
+    font-weight: 800;
+    letter-spacing: .02em;
+  }
+}
+
+/* 2) Desktop: wider left/right margins (≈ 1.5–2 cm) */
+.container{
+  /* keep your current max-width if you have one; this only affects padding */
+  padding-left: clamp(16px, 2.2vw, 22px);
+  padding-right: clamp(16px, 2.2vw, 22px);
+}
+
+@media (min-width: 1024px){
+  .container{
+    /* ~1.5–2 cm (57–76px) on typical desktop */
+    padding-left: clamp(56px, 5vw, 80px);
+    padding-right: clamp(56px, 5vw, 80px);
+  }
+}
+
+/* 3) Dynamic gallery grid (for Ausstellungen or any gallery section) */
+.gallery{
+  margin-top: 18px;
+}
+
+.gallery-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  grid-auto-flow: dense;
+  align-items: start;
+}
+
+.gallery-item{
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.6);
+}
+
+.gallery-item img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 4/3; /* default */
+}
+
+/* smart spanning for variety */
+.gallery-item.is-wide{
+  grid-column: span 2;
+}
+.gallery-item.is-tall img{
+  aspect-ratio: 3/4;
+}
+.gallery-item.is-wide img{
+  aspect-ratio: 16/9;
+}
+
+@media (max-width: 859px){
+  .gallery-grid{
+    grid-template-columns: 1fr;
+  }
+  .gallery-item.is-wide{
+    grid-column: auto;
+  }
+}
+
+# Optional: If your header overlaps anchors, keep this (only if needed)
+.anchor{ position: relative; top: -90px; }
+
